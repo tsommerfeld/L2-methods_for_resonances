@@ -1,2 +1,4 @@
 # <i>L</i><sup>2</sup>-methods for resonances
-jupyter notebooks implementing L2-methods to find resonances of a model potential
+jupyter notebooks implementing <i>L</i><sup>2</sup>-methods to find resonances of a model potential
+
+
