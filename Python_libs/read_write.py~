@@ -1,0 +1,18 @@
+import numpy as np
+
+
+def read_theta_run(fname):
+    """ 
+    read data created by complex scaling, a so-called theta-run 
+    1st column theta
+    columns with ReE ImE pairs, all separated by whitespace
+    """
+    theta_run = np.loadtxt(fname)
+    (n_thetas, n_energies) = theta_run.shape
+    n_energies = (n_energies-1)//2
+    thetas = theta_run[:,0]
+    es = np.zeros((n_thetas,n_energies), complex)
+    # put the complex energies together again
+    for j in range(n_energies):
+        es[:,j] = theta_run[:,2*j+1] + 1j*theta_run[:,2*j+2]
+    return (n_thetas, n_energies), thetas, es 
