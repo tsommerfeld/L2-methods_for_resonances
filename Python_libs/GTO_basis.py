@@ -99,13 +99,15 @@ class GBR:
             return np.linalg.multi_dot([self.C.T, Vun, self.C])
 
     
-    def H_theta(self, theta):
+    def H_theta(self, theta, alpha):
         """ 
         theta: scaling angle for the radial coordinate r: exp(i*theta) 
         returns: the complex scaled Hamiltonian H(r*exp(i*theta))
         """
-        Vun_rot = Jolanta_GTO_VJrot(self.alphas, self.Ns, self.param, theta)
-        Hun_rot = np.exp(-2j*complex(theta)) * self.Tun + Vun_rot
+        z = alpha*np.exp(1j*theta)
+        f = z**(-2)
+        Vun_rot = Jolanta_GTO_VJrot(self.alphas, self.Ns, self.param, z)
+        Hun_rot = f*self.Tun + Vun_rot
         if self.nc == 0:
             return Hun_rot
         else:
@@ -218,35 +220,33 @@ def Jolanta_GTO_H(alphas, Ns, param):
 
 
 
-def Jolanta_3D_CS(a12, param, theta):
+def Jolanta_3D_CS(a12, param, z):
     """
     computes int dr  r**4 * exp(-ag*r**2) * (VJ + Vl)
     VJ = (a*r**2 - b)*exp(-c*r**2) = Va - Vb 
     Vl = 1/r**2
     for r -> r*exp(i*theta)
 
-    this is for RAC radial p-GTO: u(r) = R(r)*r
+    this is for a radial p-GTO: u(r) = R(r)*r
     u1*u2 = r**4 * exp(-(a1+a2)*r**2)
 
+    z = alpha*exp(I*theta)
     both Va and Vb are valid only for 2*theta <= pi/2
     no problem as the max rotation angle is pi/4
 
-    Va = 15*sqrt(pi)*a*exp(2*I*t) / (16*(a12 + c*exp(2*I*t))**(7/2))
-    Vb = 3*sqrt(pi)*b / (8*(a12 + c*exp(2*I*t))**(5/2))
 
-    VJ = 3*sqrt(pi)*(5*a*exp(2*I*t) - 2*b*(a12 + c*exp(2*I*t)))
-        / (16*(a12 + c*exp(2*I*t))**(7/2))
-                                   
+    VJ(z*r) = (3*sqrt(pi)*(5*a*z**2 - 2*b*(a12 + c*z**2))
+               /(16*(a12 + c*z**2)**(7/2))                                   
     """
     a, b, c = param
     sp = np.sqrt(np.pi)
-    ex2It = np.exp(2j*complex(theta))
-    #Va = 15*sp*a*ex2It / (16*(a12 + c*ex2It)**(7/2))
-    #Vb = 3*sp*b / (8*(a12 + c*ex2It)**(5/2))    
-    VJ = ( 3*sp*(5*a*ex2It - 2*b*(a12 + c*ex2It))
-          / (16*(a12 + c*ex2It)**3.5) )
-    VL = sp / (4*(a12)**1.5)
-    return VJ + VL/ex2It
+    f = z**2
+    #Va = 15*sp*a*f / (16*(a12 + c*f)**(7/2))
+    #Vb = 3*sp*b / (8*(a12 + c*f)**(5/2))    
+    VJ = ( 3*sp * (5*a*f - 2*b*(a12 + c*f))
+          / (16*(a12 + c*f)**3.5) )
+    VL = sp / (4*(a12)**1.5) / f
+    return VJ + VL
 
 
 def Jolanta_3D_Wcap(a, rc):
@@ -376,7 +376,7 @@ def Jolanta_GTO_W(GTO_fn, alphas, Ns, rc):
     return W
 
 
-def Jolanta_GTO_VJrot(alphas, Ns, param, theta):
+def Jolanta_GTO_VJrot(alphas, Ns, param, z):
     """
     rotated Jolanta potential V_J(r*exp(I*theta)) in a GTO basis set
     ----------
@@ -384,7 +384,7 @@ def Jolanta_GTO_VJrot(alphas, Ns, param, theta):
     alphas : np.array of GTO exponents
     Ns : np.array of normalization constants
     param = (a,b,c) parameters of V_J = (a*r**2 - b)*exp(-c*r**2)
-    theta: rotation angle < pi/4; r -> r*exp(i*theta)
+    z = alpha*exp(i*theta), where arg(z) < pi/4;   
     -------
     Returns 
     Vrot : matrix represention of V_J(r*exp(I*theta))
@@ -393,10 +393,10 @@ def Jolanta_GTO_VJrot(alphas, Ns, param, theta):
     W=np.zeros((nbas,nbas), complex)
     for i in range(nbas):
         ai, Ni = alphas[i], Ns[i]
-        W[i,i] = Ni * Ni * Jolanta_3D_CS(ai+ai, param, theta)
+        W[i,i] = Ni * Ni * Jolanta_3D_CS(ai+ai, param, z)
         for j in range(i):
             aj, Nj = alphas[j], Ns[j]
-            W[i,j] = W[j,i] = Ni * Nj * Jolanta_3D_CS(ai+aj, param, theta)
+            W[i,j] = W[j,i] = Ni * Nj * Jolanta_3D_CS(ai+aj, param, z)
     return W
 
 
