@@ -1,21 +1,21 @@
-""" 
+"""
 
-functions needed for the GPA analysis of stabilization graphs 
+functions needed for the GPA analysis of stabilization graphs
 
-convention: 
- 
+convention:
+
   the scaling variable is called L
   L could be a box-size or a scaling factor of exponents
-  however, I have the suspicion is works only, 
+  however, I have the suspicion is works only,
   if s = 1/L^2 as in L = boxlength is used
 
 
 """
 
 
-
 import numpy as np
 #import pade
+
 
 def dEdL(E, L, P, Q, R):
     """
@@ -32,7 +32,8 @@ def dEdL(E, L, P, Q, R):
     Pp = P.deriv(1)(L)
     Qp = Q.deriv(1)(L)
     Rp = R.deriv(1)(L)
-    return -(E**2*Pp + E*Qp + Rp) / (2*E*P(L) + Q(L))
+    return -(E**2 * Pp + E * Qp + Rp) / (2 * E * P(L) + Q(L))
+
 
 def E_from_L(L, A, B, C):
     """
@@ -41,6 +42,7 @@ def E_from_L(L, A, B, C):
     """
     P = np.poly1d([A(L), B(L), C(L)])
     return P.roots
+
 
 def E_and_Ep(L, A, B, C):
     """
@@ -60,10 +62,10 @@ def E_and_Ep(L, A, B, C):
 #
 #  for Newton we solve dEdL = 0 or E' = 0
 #
-#  so we iterate L[i+1] = L[i] - E'/E'' 
+#  so we iterate L[i+1] = L[i] - E'/E''
 #
-#  the fraction E'/E'' can be worked out analytically: 
-#  
+#  the fraction E'/E'' can be worked out analytically:
+#
 # (E^2*P' + E*Q' + R')  /
 # (2*P*E'^2 + 4*E*E'*P' + E^2*P'' + 2*E'*Q' + E*Q'' + R'')
 #
@@ -72,15 +74,11 @@ def EpoEpp(E, L, P, Q, R):
     Pp = P.deriv(1)(L)
     Qp = Q.deriv(1)(L)
     Rp = R.deriv(1)(L)
-    Ep = -(E**2*Pp + E*Qp + Rp) / (2*E*P(L) + Q(L))
+    Ep = -(E**2 * Pp + E * Qp + Rp) / (2 * E * P(L) + Q(L))
     Ppp = P.deriv(2)(L)
     Qpp = Q.deriv(2)(L)
     Rpp = R.deriv(2)(L)
-    num = E**2*Pp + E*Qp + Rp
-    den = 2*P(L)*Ep**2 + 4*E*Ep*Pp + E**2*Ppp + 2*Ep*Qp + E*Qpp + Rpp
-    return num/den
-
-
-
-
-
+    num = E**2 * Pp + E * Qp + Rp
+    den = 2 * P(L) * Ep**2 + 4 * E * Ep * Pp + E**2 * \
+        Ppp + 2 * Ep * Qp + E * Qpp + Rpp
+    return num / den

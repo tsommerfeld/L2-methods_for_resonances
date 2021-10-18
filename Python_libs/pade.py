@@ -6,7 +6,7 @@ from scipy import sqrt
 
 
     
-def pade_via_lstsq(np, nq, xs, ys, rcond=1e-14, return_lists=False):
+def pade_via_lstsq(np, nq, xs, ys, rcond=1e-14, return_lists=False, ycplx=False):
     """ 
     compute the coeffients of a Pade np/np approximant using numpy.linalg.lstsq
     the lstsq function will take any number of equations, so this should
@@ -15,8 +15,11 @@ def pade_via_lstsq(np, nq, xs, ys, rcond=1e-14, return_lists=False):
     """
     N_coef = np + nq + 1
     M_data = len(xs)
-    A=numpy.zeros((M_data,N_coef))
-    b=numpy.zeros(M_data)
+    y_type = float
+    if ycplx:
+        y_type = complex
+    A = numpy.zeros((M_data,N_coef), y_type)
+    b = numpy.zeros(M_data, y_type) 
     for k_data in range(M_data):
         i_coef = 0
         for ip in range(np,1,-1): # counts from np down to 2
