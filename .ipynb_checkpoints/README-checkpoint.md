@@ -1,44 +1,14 @@
-# $\cal L^2$-methods for resonances
-
-A resonance is *quasi-bound* or *temporary* state of a quantum state. It can be thought of as a discrete state embedded in and interacting with a continuum so that the discrete state can decay into into the continuum and aquires a lifetimes.
-
-In principle, resonances are features of a scattering continuum, however, imposing scattering boundary conditions is far more challenging than imposing bound-state (or $\cal L^2$) boundary conditions, and therefore many $\cal L^2$-methods for computing the energy and the lifetime of resonance states have been developed.
-
-Even though these methods are based on completely different ideas, all $\cal L^2$-methods follow a similar computational protocol:
-1. Parametrize the physical Hamiltonian $\hat H \longleftarrow {\hat H}(\lambda)$.
-2. Diagonalize $\hat H(\lambda)$ repeatedly.
-3. Identify the resonance feature, normaly one- possibly two- trajectories $E_n(\lambda_j)$.
-4. Analyze the identified trajectories to find the resonance energy $E_r$ and the lifetime $\tau$.
-
-## Methods
-
-The goal is to compare methods for step 1 and, in particular, method variants for step 4. To do so on equal footing, a model potential is used
-\[
-V(r) = (ar^2 - b) \exp(-cr^2) + \frac{l(l+1)}{2r^2}
-\]
-
-
-### Step 1
-
-
-
-<li> Complex scaling method </li>
-        <li> Complex absorbing potential method </li>
-        <li> Stabilization method </li>
-        <li> Regularized analytic continuation method </li>
-      </ul> 
-</ul>
-# $\cal L^2$-methods for resonances
+# *L*<sup>2</sup>-methods for resonances
 
 A resonance is *quasi-bound* or *temporary* state of a quantum state. It can be thought of as a discrete state embedded in and interacting with a continuum so that the discrete state can decay into the continuum and thus aquires a lifetimes.
 
-In principle, resonances are features of a scattering continuum, however, imposing scattering boundary conditions is far more challenging than imposing bound-state (or $\cal L^2$) boundary conditions, and therefore many $\cal L^2$-methods for computing the energy and the lifetime of resonance states have been developed.
+In principle, resonances are features of a scattering continuum, however, imposing scattering boundary conditions is far more challenging than imposing bound-state (or *L*<sup>2</sup>) boundary conditions, and therefore many *L*<sup>2</sup>-methods for computing the energy and the lifetime of resonance states have been developed.
 
-Even though these methods are based on completely different ideas, all $\cal L^2$-methods follow a similar computational protocol:
-1. Parametrize the physical Hamiltonian $\hat H \longrightarrow {\hat H}(\lambda)$.
-2. Diagonalize $\hat H(\lambda)$ repeatedly.
-3. Identify the resonance feature, normaly one- possibly two- trajectories $E_n(\lambda_j)$.
-4. Analyze the identified trajectories to find the resonance energy $E_r$ and the lifetime $\tau$.
+Even though these methods are based on completely different ideas, all *L*<sup>2</sup>-methods follow a similar computational protocol:
+1. Parametrize the physical Hamiltonian **H** &rarr; **H**(&lambda;).
+2. Diagonalize **H**(&lambda;) repeatedly.
+3. Identify the resonance feature, normaly one- possibly two- trajectories *E*<sub>*n*</sub>(&lambda;<sub>*j*</sub>).
+4. Analyze the identified trajectories to find the resonance energy *E*<sub>*r*</sub> and the lifetime &tau;.
 
 ## Implementation
 
@@ -50,14 +20,14 @@ All methods are implememted as jupyter notebooks, but a substantial part of the 
 
 ## Methods
 
-The goal is to compare different $\cal L^2$-methods and, in particular, their  variants on equal footing. To do so, a model potential is used:
+The goal is to compare different *L*<sup>2</sup>-methods and, in particular, their  variants on equal footing. To do so, a model potential is used:
 
-$V(r) = (ar^2 - b) \exp(-cr^2) + \frac{l(l+1)}{2r^2}$
+*V*(*r*) = (*ar*<sup> 2</sup> - *b*) exp(-*cr*<sup> 2</sup>) + (l(l+1))/(2*r*<sup> 2</sup>)
 
-where $l=1$, and the parameters $a$, $b$, and $c$ are chosen so that $V(r)$ supports a bound state at $E=-7.2$ eV and a resonance at $E_r=3.2$ eV.
+where *l* = 1, and the parameters *a*, *b*, and *c* are chosen so that *V*(*r*) supports a bound state at *E* = -7.2 eV and a resonance at *E*<sub>*r*</sub> = 3.2 eV.
 
 
-### $\cal L^2$-methods implemented
+### *L*<sup>2</sup>-methods implemented
 
 The four major methods implemented are:
 1. Complex scaling (CS).
